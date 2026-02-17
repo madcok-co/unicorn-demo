@@ -5,9 +5,10 @@ import (
 	"log"
 	"time"
 
+	"github.com/madcok-co/unicorn-demo/internal/database/seeders"
 	"github.com/madcok-co/unicorn-demo/internal/domain"
-	"github.com/madcok-co/unicorn/core/pkg/contracts"
 	gormDriver "github.com/madcok-co/unicorn/contrib/database/gorm"
+	"github.com/madcok-co/unicorn/core/pkg/contracts"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -109,6 +110,7 @@ func ConnectRaw(cfg *Config) (*gorm.DB, error) {
 func AutoMigrate(db *gorm.DB) error {
 	log.Println("Running database migrations...")
 
+	// Core tables
 	err := db.AutoMigrate(
 		&domain.User{},
 		&domain.Project{},
@@ -118,7 +120,23 @@ func AutoMigrate(db *gorm.DB) error {
 	)
 
 	if err != nil {
-		return fmt.Errorf("failed to migrate database: %w", err)
+		return fmt.Errorf("failed to migrate core tables: %w", err)
+	}
+
+	// ERP Master Data tables
+	err = db.AutoMigrate(
+		&domain.Customer{},
+		&domain.Vendor{},
+		&domain.Product{},
+		&domain.Warehouse{},
+		// &domain.ChartOfAccount{}, // TODO: Fix COA handler
+		&domain.Tax{},
+		&domain.PaymentTerm{},
+		&domain.Currency{},
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to migrate ERP tables: %w", err)
 	}
 
 	log.Println("Database migrations completed successfully")
@@ -250,6 +268,18 @@ func SeedData(db *gorm.DB) error {
 		if err := db.Create(&task).Error; err != nil {
 			return fmt.Errorf("failed to seed task: %w", err)
 		}
+	}
+
+	// Seed ERP master data for acme tenant
+	log.Println("Seeding ERP master data for acme tenant...")
+	if err := seeders.SeedERPMasterData(db, "acme", "user-admin-acme"); err != nil {
+		return fmt.Errorf("failed to seed ERP data for acme: %w", err)
+	}
+
+	// Seed ERP master data for techcorp tenant
+	log.Println("Seeding ERP master data for techcorp tenant...")
+	if err := seeders.SeedERPMasterData(db, "techcorp", "user-admin-techcorp"); err != nil {
+		return fmt.Errorf("failed to seed ERP data for techcorp: %w", err)
 	}
 
 	log.Println("Initial data seeded successfully")

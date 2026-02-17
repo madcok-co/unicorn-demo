@@ -74,11 +74,6 @@ type ListCustomersDTO struct {
 	Active *bool  `json:"active"`
 }
 
-type CustomersResponse struct {
-	Data       []*Customer     `json:"data"`
-	Pagination *PaginationMeta `json:"pagination"`
-}
-
 // ============================================================================
 // VENDOR DTOs
 // ============================================================================
@@ -148,11 +143,6 @@ type ListVendorsDTO struct {
 	Type     string `json:"type" validate:"omitempty,oneof=individual company"`
 	Active   *bool  `json:"active"`
 	Category string `json:"category"`
-}
-
-type VendorsResponse struct {
-	Data       []*Vendor       `json:"data"`
-	Pagination *PaginationMeta `json:"pagination"`
 }
 
 // ============================================================================
@@ -257,11 +247,6 @@ type ListProductsDTO struct {
 	TrackInventory *bool  `json:"track_inventory"`
 }
 
-type ProductsResponse struct {
-	Data       []*Product      `json:"data"`
-	Pagination *PaginationMeta `json:"pagination"`
-}
-
 // ============================================================================
 // WAREHOUSE DTOs
 // ============================================================================
@@ -324,11 +309,6 @@ type ListWarehousesDTO struct {
 	Active *bool  `json:"active"`
 }
 
-type WarehousesResponse struct {
-	Data       []*Warehouse    `json:"data"`
-	Pagination *PaginationMeta `json:"pagination"`
-}
-
 // ============================================================================
 // CHART OF ACCOUNT DTOs
 // ============================================================================
@@ -361,16 +341,105 @@ type UpdateChartOfAccountDTO struct {
 }
 
 type ListChartOfAccountsDTO struct {
-	Page     int    `json:"page" validate:"omitempty,min=1"`
-	Limit    int    `json:"limit" validate:"omitempty,min=1,max=100"`
-	Search   string `json:"search"`
-	Type     string `json:"type" validate:"omitempty,oneof=asset liability equity income expense"`
-	Category string `json:"category"`
-	Active   *bool  `json:"active"`
-	IsGroup  *bool  `json:"is_group"`
+	Page     int     `json:"page" validate:"omitempty,min=1"`
+	Limit    int     `json:"limit" validate:"omitempty,min=1,max=100"`
+	Search   string  `json:"search"`
+	Type     string  `json:"type" validate:"omitempty,oneof=asset liability equity income expense"`
+	Category string  `json:"category"`
+	ParentID *string `json:"parent_id"`
+	Active   *bool   `json:"active"`
+	IsGroup  *bool   `json:"is_group"`
 }
 
-type ChartOfAccountsResponse struct {
-	Data       []*ChartOfAccount `json:"data"`
-	Pagination *PaginationMeta   `json:"pagination"`
+// ============================================================================
+// TAX DTOs
+// ============================================================================
+
+type CreateTaxDTO struct {
+	Code        string
+	Name        string
+	Description string
+	Type        string
+	Scope       string
+	Rate        float64
+	IsDefault   bool
+}
+
+type UpdateTaxDTO struct {
+	Code        *string
+	Name        *string
+	Description *string
+	Type        *string
+	Scope       *string
+	Rate        *float64
+	IsDefault   *bool
+}
+
+type ListTaxesDTO struct {
+	Page      int
+	Limit     int
+	Search    string
+	Type      string
+	Scope     string
+	IsDefault *bool
+}
+
+// ============================================================================
+// PAYMENT TERM DTOs
+// ============================================================================
+
+type CreatePaymentTermDTO struct {
+	Code            string
+	Name            string
+	Description     string
+	Days            int
+	DiscountPercent float64
+	DiscountDays    int
+	IsDefault       bool
+}
+
+type UpdatePaymentTermDTO struct {
+	Code            *string
+	Name            *string
+	Description     *string
+	Days            *int
+	DiscountPercent *float64
+	DiscountDays    *int
+	IsDefault       *bool
+}
+
+type ListPaymentTermsDTO struct {
+	Page      int
+	Limit     int
+	Search    string
+	IsDefault *bool
+}
+
+// ============================================================================
+// CURRENCY DTOs
+// ============================================================================
+
+type CreateCurrencyDTO struct {
+	Code          string
+	Name          string
+	Symbol        string
+	ExchangeRate  float64
+	DecimalPlaces int
+	IsDefault     bool
+}
+
+type UpdateCurrencyDTO struct {
+	Code          *string
+	Name          *string
+	Symbol        *string
+	ExchangeRate  *float64
+	DecimalPlaces *int
+	IsDefault     *bool
+}
+
+type ListCurrenciesDTO struct {
+	Page      int
+	Limit     int
+	Search    string
+	IsDefault *bool
 }

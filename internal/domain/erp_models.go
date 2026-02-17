@@ -307,23 +307,25 @@ func (PaymentTerm) TableName() string {
 
 // Currency represents multi-currency support
 type Currency struct {
-	ID     string  `json:"id" gorm:"primaryKey"`
-	Code   string  `json:"code" gorm:"uniqueIndex;not null"` // IDR, USD, EUR
-	Name   string  `json:"name" gorm:"not null"`             // Indonesian Rupiah
-	Symbol string  `json:"symbol" gorm:"not null"`           // Rp, $, €
-	Rate   float64 `json:"rate" gorm:"not null"`             // Exchange rate to base currency
-	Active bool    `json:"active" gorm:"default:true"`
-	IsBase bool    `json:"is_base" gorm:"default:false"` // Base currency for the system
+	ID       string `json:"id" gorm:"primaryKey"`
+	Code     string `json:"code" gorm:"uniqueIndex:idx_currency_code_tenant;not null"` // USD, EUR, IDR
+	Name     string `json:"name" gorm:"not null"`                                      // US Dollar, Euro
+	Symbol   string `json:"symbol" gorm:"not null"`                                    // $, €, Rp
+	TenantID string `json:"tenant_id" gorm:"uniqueIndex:idx_currency_code_tenant;index;not null"`
+	Active   bool   `json:"active" gorm:"default:true"`
+
+	// Exchange rate and default
+	ExchangeRate float64 `json:"exchange_rate" gorm:"not null;default:1"` // Exchange rate to base currency
+	IsDefault    bool    `json:"is_default" gorm:"default:false"`         // Default currency for the tenant
 
 	// Formatting
-	DecimalPlaces      int    `json:"decimal_places" gorm:"default:2"`
-	ThousandsSeparator string `json:"thousands_separator" gorm:"default:','"`
-	DecimalSeparator   string `json:"decimal_separator" gorm:"default:'.'"`
+	DecimalPlaces int `json:"decimal_places" gorm:"default:2"`
 
 	// Metadata
+	CreatedBy string    `json:"created_by"`
 	UpdatedBy string    `json:"updated_by"`
-	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (Currency) TableName() string {

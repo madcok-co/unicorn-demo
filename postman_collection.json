@@ -1,0 +1,434 @@
+{
+  "info": {
+    "name": "Unicorn Demo API",
+    "description": "Full-featured enterprise demo API with all Unicorn framework features",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "tenantHost",
+      "value": "acme.localhost",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('accessToken', jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dev@acme.com\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects - V1",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Project\",\n  \"description\": \"Created from Postman\",\n  \"tags\": [\"test\", \"demo\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects"]
+            }
+          }
+        },
+        {
+          "name": "Get Project",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects/proj-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects", "proj-1"]
+            }
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Project\",\n  \"status\": \"inactive\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects/proj-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects", "proj-1"]
+            }
+          }
+        },
+        {
+          "name": "Project Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects - V2",
+      "item": [
+        {
+          "name": "Batch Update Projects",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_ids\": [\"proj-1\", \"proj-2\"],\n  \"updates\": {\n    \"status\": \"archived\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v2/projects/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v2", "projects", "batch"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "User Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "List Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tasks?project_id=proj-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "tasks"],
+              "query": [
+                {
+                  "key": "project_id",
+                  "value": "proj-1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Host",
+                "value": "{{tenantHost}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": \"proj-1\",\n  \"title\": \"New Task\",\n  \"description\": \"Task from Postman\",\n  \"priority\": \"high\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "tasks"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Multi-Tenancy Examples",
+      "item": [
+        {
+          "name": "Acme - List Projects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "acme.localhost"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects"]
+            }
+          }
+        },
+        {
+          "name": "TechCorp - List Projects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Host",
+                "value": "techcorp.localhost"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

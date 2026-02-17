@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # API Application
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      # Application
+      - APP_HTTP_HOST=0.0.0.0
+      - APP_HTTP_PORT=8080
+
+      # Database
+      - APP_DB_DRIVER=postgres
+      - APP_DB_HOST=postgres
+      - APP_DB_PORT=5432
+      - APP_DB_USER=unicorn
+      - APP_DB_PASSWORD=unicorn_secret
+      - APP_DB_DATABASE=unicorn_demo
+      - APP_DB_SSLMODE=disable
+
+      # OAuth2 (replace with your values)
+      - APP_OAUTH_PROVIDER=google
+      - APP_OAUTH_CLIENT_ID=${GOOGLE_CLIENT_ID:-demo-client-id}
+      - APP_OAUTH_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-demo-client-secret}
+      - APP_OAUTH_REDIRECT_URL=http://localhost:8080/api/v1/auth/callback
+
+      # Multi-tenancy
+      - APP_MULTITENANCY_STRATEGY=subdomain
+      - APP_MULTITENANCY_DOMAIN=localhost
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=unicorn
+      - POSTGRES_PASSWORD=unicorn_secret
+      - POSTGRES_DB=unicorn_demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U unicorn"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Nginx Reverse Proxy (for multi-tenant subdomain routing)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app-network
+    depends_on:
+      - api
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:

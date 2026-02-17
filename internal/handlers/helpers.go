@@ -11,12 +11,24 @@ import (
 
 // getDB returns the underlying GORM database instance
 func getDB(ctx *context.Context) *gorm.DB {
-	// Access DB via context metadata
-	if dbInterface, exists := ctx.Get("db"); exists && dbInterface != nil {
-		if db, ok := dbInterface.(*gorm.DB); ok {
-			return db
+	// First try to get DB directly from context (for testing)
+	if db, exists := ctx.Get("db"); exists && db != nil {
+		if gormDB, ok := db.(*gorm.DB); ok {
+			return gormDB
 		}
 	}
+
+	// Access DB via context's DB() method (lazy loaded from AppAdapters)
+	dbInterface := ctx.DB()
+	if dbInterface == nil {
+		return nil
+	}
+
+	// Unwrap GORM DB from Unicorn's database driver
+	if gormDriver, ok := dbInterface.(interface{ DB() *gorm.DB }); ok {
+		return gormDriver.DB()
+	}
+
 	return nil
 }
 
@@ -58,7 +70,7 @@ func createAuditLog(ctx *context.Context, userID, action, resource, resourceID s
 	// Get request info safely
 	ipAddress := "unknown"
 	userAgent := "unknown"
-	
+
 	if req := ctx.Request(); req != nil {
 		// Get remote address
 		if addr := req.Header("X-Real-IP"); addr != "" {
@@ -66,7 +78,7 @@ func createAuditLog(ctx *context.Context, userID, action, resource, resourceID s
 		} else if addr := req.Header("X-Forwarded-For"); addr != "" {
 			ipAddress = addr
 		}
-		
+
 		// Get user agent
 		if ua := req.Header("User-Agent"); ua != "" {
 			userAgent = ua

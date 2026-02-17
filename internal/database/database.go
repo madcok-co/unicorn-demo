@@ -129,7 +129,7 @@ func AutoMigrate(db *gorm.DB) error {
 		&domain.Vendor{},
 		&domain.Product{},
 		&domain.Warehouse{},
-		// &domain.ChartOfAccount{}, // TODO: Fix COA handler
+		&domain.ChartOfAccount{},
 		&domain.Tax{},
 		&domain.PaymentTerm{},
 		&domain.Currency{},
@@ -137,6 +137,38 @@ func AutoMigrate(db *gorm.DB) error {
 
 	if err != nil {
 		return fmt.Errorf("failed to migrate ERP tables: %w", err)
+	}
+
+	// Sales Module tables
+	err = db.AutoMigrate(
+		&domain.SalesQuotation{},
+		&domain.SalesQuotationItem{},
+		&domain.SalesOrder{},
+		&domain.SalesOrderItem{},
+		&domain.DeliveryOrder{},
+		&domain.DeliveryOrderItem{},
+		&domain.SalesInvoice{},
+		&domain.SalesInvoiceItem{},
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to migrate Sales tables: %w", err)
+	}
+
+	// Purchase Module tables
+	err = db.AutoMigrate(
+		&domain.PurchaseRequest{},
+		&domain.PurchaseRequestItem{},
+		&domain.PurchaseOrder{},
+		&domain.PurchaseOrderItem{},
+		&domain.GoodsReceipt{},
+		&domain.GoodsReceiptItem{},
+		&domain.PurchaseInvoice{},
+		&domain.PurchaseInvoiceItem{},
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to migrate Purchase tables: %w", err)
 	}
 
 	log.Println("Database migrations completed successfully")
@@ -280,6 +312,30 @@ func SeedData(db *gorm.DB) error {
 	log.Println("Seeding ERP master data for techcorp tenant...")
 	if err := seeders.SeedERPMasterData(db, "techcorp", "user-admin-techcorp"); err != nil {
 		return fmt.Errorf("failed to seed ERP data for techcorp: %w", err)
+	}
+
+	// Seed Sales data for acme tenant
+	log.Println("Seeding Sales data for acme tenant...")
+	if err := seeders.SeedSalesData(db, "acme", "user-admin-acme"); err != nil {
+		return fmt.Errorf("failed to seed Sales data for acme: %w", err)
+	}
+
+	// Seed Sales data for techcorp tenant
+	log.Println("Seeding Sales data for techcorp tenant...")
+	if err := seeders.SeedSalesData(db, "techcorp", "user-admin-techcorp"); err != nil {
+		return fmt.Errorf("failed to seed Sales data for techcorp: %w", err)
+	}
+
+	// Seed Purchase data for acme tenant
+	log.Println("Seeding Purchase data for acme tenant...")
+	if err := seeders.SeedPurchaseData(db, "acme", "user-admin-acme"); err != nil {
+		return fmt.Errorf("failed to seed Purchase data for acme: %w", err)
+	}
+
+	// Seed Purchase data for techcorp tenant
+	log.Println("Seeding Purchase data for techcorp tenant...")
+	if err := seeders.SeedPurchaseData(db, "techcorp", "user-admin-techcorp"); err != nil {
+		return fmt.Errorf("failed to seed Purchase data for techcorp: %w", err)
 	}
 
 	log.Println("Initial data seeded successfully")

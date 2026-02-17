@@ -407,7 +407,515 @@ func registerV1Routes(app *app.App) {
 		HTTP("DELETE", "/api/v1/tasks/:id").
 		Done()
 
-	log.Println("✅ Registered 28 v1 endpoints")
+	// ========================================
+	// ERP Master Data Routes
+	// ========================================
+
+	// Customers
+	app.RegisterHandler(handlers.ListCustomers).
+		Named("customers.list.v1").
+		HTTP("GET", "/api/v1/erp/customers").
+		Done()
+
+	app.RegisterHandler(handlers.CreateCustomer).
+		Named("customers.create.v1").
+		HTTP("POST", "/api/v1/erp/customers").
+		Done()
+
+	app.RegisterHandler(handlers.GetCustomer).
+		Named("customers.get.v1").
+		HTTP("GET", "/api/v1/erp/customers/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateCustomer).
+		Named("customers.update.v1").
+		HTTP("PUT", "/api/v1/erp/customers/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteCustomer).
+		Named("customers.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/customers/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetCustomerStats).
+		Named("customers.stats.v1").
+		HTTP("GET", "/api/v1/erp/customers/stats").
+		Done()
+
+	// Vendors
+	app.RegisterHandler(handlers.ListVendors).
+		Named("vendors.list.v1").
+		HTTP("GET", "/api/v1/erp/vendors").
+		Done()
+
+	app.RegisterHandler(handlers.CreateVendor).
+		Named("vendors.create.v1").
+		HTTP("POST", "/api/v1/erp/vendors").
+		Done()
+
+	app.RegisterHandler(handlers.GetVendor).
+		Named("vendors.get.v1").
+		HTTP("GET", "/api/v1/erp/vendors/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateVendor).
+		Named("vendors.update.v1").
+		HTTP("PUT", "/api/v1/erp/vendors/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteVendor).
+		Named("vendors.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/vendors/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetVendorStats).
+		Named("vendors.stats.v1").
+		HTTP("GET", "/api/v1/erp/vendors/stats").
+		Done()
+
+	// Products
+	app.RegisterHandler(handlers.ListProducts).
+		Named("products.list.v1").
+		HTTP("GET", "/api/v1/erp/products").
+		Done()
+
+	app.RegisterHandler(handlers.CreateProduct).
+		Named("products.create.v1").
+		HTTP("POST", "/api/v1/erp/products").
+		Done()
+
+	app.RegisterHandler(handlers.GetProduct).
+		Named("products.get.v1").
+		HTTP("GET", "/api/v1/erp/products/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateProduct).
+		Named("products.update.v1").
+		HTTP("PUT", "/api/v1/erp/products/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteProduct).
+		Named("products.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/products/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetProductStats).
+		Named("products.stats.v1").
+		HTTP("GET", "/api/v1/erp/products/stats").
+		Done()
+
+	// Warehouses
+	app.RegisterHandler(handlers.ListWarehouses).
+		Named("warehouses.list.v1").
+		HTTP("GET", "/api/v1/erp/warehouses").
+		Done()
+
+	app.RegisterHandler(handlers.CreateWarehouse).
+		Named("warehouses.create.v1").
+		HTTP("POST", "/api/v1/erp/warehouses").
+		Done()
+
+	app.RegisterHandler(handlers.GetWarehouse).
+		Named("warehouses.get.v1").
+		HTTP("GET", "/api/v1/erp/warehouses/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateWarehouse).
+		Named("warehouses.update.v1").
+		HTTP("PUT", "/api/v1/erp/warehouses/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteWarehouse).
+		Named("warehouses.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/warehouses/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetWarehouseStats).
+		Named("warehouses.stats.v1").
+		HTTP("GET", "/api/v1/erp/warehouses/stats").
+		Done()
+
+	// Chart of Accounts
+	app.RegisterHandler(handlers.ListChartOfAccounts).
+		Named("coa.list.v1").
+		HTTP("GET", "/api/v1/erp/chart-of-accounts").
+		Done()
+
+	app.RegisterHandler(handlers.CreateChartOfAccount).
+		Named("coa.create.v1").
+		HTTP("POST", "/api/v1/erp/chart-of-accounts").
+		Done()
+
+	app.RegisterHandler(handlers.GetChartOfAccount).
+		Named("coa.get.v1").
+		HTTP("GET", "/api/v1/erp/chart-of-accounts/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateChartOfAccount).
+		Named("coa.update.v1").
+		HTTP("PUT", "/api/v1/erp/chart-of-accounts/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteChartOfAccount).
+		Named("coa.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/chart-of-accounts/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetChartOfAccountStats).
+		Named("coa.stats.v1").
+		HTTP("GET", "/api/v1/erp/chart-of-accounts/stats").
+		Done()
+
+	// Taxes
+	app.RegisterHandler(handlers.ListTaxes).
+		Named("taxes.list.v1").
+		HTTP("GET", "/api/v1/erp/taxes").
+		Done()
+
+	app.RegisterHandler(handlers.CreateTax).
+		Named("taxes.create.v1").
+		HTTP("POST", "/api/v1/erp/taxes").
+		Done()
+
+	app.RegisterHandler(handlers.GetTax).
+		Named("taxes.get.v1").
+		HTTP("GET", "/api/v1/erp/taxes/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateTax).
+		Named("taxes.update.v1").
+		HTTP("PUT", "/api/v1/erp/taxes/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteTax).
+		Named("taxes.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/taxes/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetTaxStats).
+		Named("taxes.stats.v1").
+		HTTP("GET", "/api/v1/erp/taxes/stats").
+		Done()
+
+	// Payment Terms
+	app.RegisterHandler(handlers.ListPaymentTerms).
+		Named("payment_terms.list.v1").
+		HTTP("GET", "/api/v1/erp/payment-terms").
+		Done()
+
+	app.RegisterHandler(handlers.CreatePaymentTerm).
+		Named("payment_terms.create.v1").
+		HTTP("POST", "/api/v1/erp/payment-terms").
+		Done()
+
+	app.RegisterHandler(handlers.GetPaymentTerm).
+		Named("payment_terms.get.v1").
+		HTTP("GET", "/api/v1/erp/payment-terms/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdatePaymentTerm).
+		Named("payment_terms.update.v1").
+		HTTP("PUT", "/api/v1/erp/payment-terms/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeletePaymentTerm).
+		Named("payment_terms.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/payment-terms/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetPaymentTermStats).
+		Named("payment_terms.stats.v1").
+		HTTP("GET", "/api/v1/erp/payment-terms/stats").
+		Done()
+
+	// Currencies
+	app.RegisterHandler(handlers.ListCurrencies).
+		Named("currencies.list.v1").
+		HTTP("GET", "/api/v1/erp/currencies").
+		Done()
+
+	app.RegisterHandler(handlers.CreateCurrency).
+		Named("currencies.create.v1").
+		HTTP("POST", "/api/v1/erp/currencies").
+		Done()
+
+	app.RegisterHandler(handlers.GetCurrency).
+		Named("currencies.get.v1").
+		HTTP("GET", "/api/v1/erp/currencies/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateCurrency).
+		Named("currencies.update.v1").
+		HTTP("PUT", "/api/v1/erp/currencies/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteCurrency).
+		Named("currencies.delete.v1").
+		HTTP("DELETE", "/api/v1/erp/currencies/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetCurrencyStats).
+		Named("currencies.stats.v1").
+		HTTP("GET", "/api/v1/erp/currencies/stats").
+		Done()
+
+	// ========================================
+	// Sales Module Routes
+	// ========================================
+
+	// Sales Quotations
+	app.RegisterHandler(handlers.ListSalesQuotations).
+		Named("sales_quotations.list.v1").
+		HTTP("GET", "/api/v1/sales/quotations").
+		Done()
+
+	app.RegisterHandler(handlers.CreateSalesQuotation).
+		Named("sales_quotations.create.v1").
+		HTTP("POST", "/api/v1/sales/quotations").
+		Done()
+
+	app.RegisterHandler(handlers.GetSalesQuotation).
+		Named("sales_quotations.get.v1").
+		HTTP("GET", "/api/v1/sales/quotations/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateSalesQuotation).
+		Named("sales_quotations.update.v1").
+		HTTP("PUT", "/api/v1/sales/quotations/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteSalesQuotation).
+		Named("sales_quotations.delete.v1").
+		HTTP("DELETE", "/api/v1/sales/quotations/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetSalesQuotationStats).
+		Named("sales_quotations.stats.v1").
+		HTTP("GET", "/api/v1/sales/quotations/stats").
+		Done()
+
+	// Sales Orders
+	app.RegisterHandler(handlers.ListSalesOrders).
+		Named("sales_orders.list.v1").
+		HTTP("GET", "/api/v1/sales/orders").
+		Done()
+
+	app.RegisterHandler(handlers.CreateSalesOrder).
+		Named("sales_orders.create.v1").
+		HTTP("POST", "/api/v1/sales/orders").
+		Done()
+
+	app.RegisterHandler(handlers.GetSalesOrder).
+		Named("sales_orders.get.v1").
+		HTTP("GET", "/api/v1/sales/orders/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateSalesOrder).
+		Named("sales_orders.update.v1").
+		HTTP("PUT", "/api/v1/sales/orders/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteSalesOrder).
+		Named("sales_orders.delete.v1").
+		HTTP("DELETE", "/api/v1/sales/orders/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetSalesOrderStats).
+		Named("sales_orders.stats.v1").
+		HTTP("GET", "/api/v1/sales/orders/stats").
+		Done()
+
+	// Delivery Orders
+	app.RegisterHandler(handlers.ListDeliveryOrders).
+		Named("delivery_orders.list.v1").
+		HTTP("GET", "/api/v1/sales/deliveries").
+		Done()
+
+	app.RegisterHandler(handlers.CreateDeliveryOrder).
+		Named("delivery_orders.create.v1").
+		HTTP("POST", "/api/v1/sales/deliveries").
+		Done()
+
+	app.RegisterHandler(handlers.GetDeliveryOrder).
+		Named("delivery_orders.get.v1").
+		HTTP("GET", "/api/v1/sales/deliveries/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateDeliveryOrder).
+		Named("delivery_orders.update.v1").
+		HTTP("PUT", "/api/v1/sales/deliveries/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteDeliveryOrder).
+		Named("delivery_orders.delete.v1").
+		HTTP("DELETE", "/api/v1/sales/deliveries/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetDeliveryOrderStats).
+		Named("delivery_orders.stats.v1").
+		HTTP("GET", "/api/v1/sales/deliveries/stats").
+		Done()
+
+	// Sales Invoices
+	app.RegisterHandler(handlers.ListSalesInvoices).
+		Named("sales_invoices.list.v1").
+		HTTP("GET", "/api/v1/sales/invoices").
+		Done()
+
+	app.RegisterHandler(handlers.CreateSalesInvoice).
+		Named("sales_invoices.create.v1").
+		HTTP("POST", "/api/v1/sales/invoices").
+		Done()
+
+	app.RegisterHandler(handlers.GetSalesInvoice).
+		Named("sales_invoices.get.v1").
+		HTTP("GET", "/api/v1/sales/invoices/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateSalesInvoice).
+		Named("sales_invoices.update.v1").
+		HTTP("PUT", "/api/v1/sales/invoices/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteSalesInvoice).
+		Named("sales_invoices.delete.v1").
+		HTTP("DELETE", "/api/v1/sales/invoices/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetSalesInvoiceStats).
+		Named("sales_invoices.stats.v1").
+		HTTP("GET", "/api/v1/sales/invoices/stats").
+		Done()
+
+	// ========================================
+	// Purchase Module Routes
+	// ========================================
+
+	// Purchase Requests
+	app.RegisterHandler(handlers.ListPurchaseRequests).
+		Named("purchase_requests.list.v1").
+		HTTP("GET", "/api/v1/purchase/requests").
+		Done()
+
+	app.RegisterHandler(handlers.CreatePurchaseRequest).
+		Named("purchase_requests.create.v1").
+		HTTP("POST", "/api/v1/purchase/requests").
+		Done()
+
+	app.RegisterHandler(handlers.GetPurchaseRequest).
+		Named("purchase_requests.get.v1").
+		HTTP("GET", "/api/v1/purchase/requests/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdatePurchaseRequest).
+		Named("purchase_requests.update.v1").
+		HTTP("PUT", "/api/v1/purchase/requests/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeletePurchaseRequest).
+		Named("purchase_requests.delete.v1").
+		HTTP("DELETE", "/api/v1/purchase/requests/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetPurchaseRequestStats).
+		Named("purchase_requests.stats.v1").
+		HTTP("GET", "/api/v1/purchase/requests/stats").
+		Done()
+
+	// Purchase Orders
+	app.RegisterHandler(handlers.ListPurchaseOrders).
+		Named("purchase_orders.list.v1").
+		HTTP("GET", "/api/v1/purchase/orders").
+		Done()
+
+	app.RegisterHandler(handlers.CreatePurchaseOrder).
+		Named("purchase_orders.create.v1").
+		HTTP("POST", "/api/v1/purchase/orders").
+		Done()
+
+	app.RegisterHandler(handlers.GetPurchaseOrder).
+		Named("purchase_orders.get.v1").
+		HTTP("GET", "/api/v1/purchase/orders/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdatePurchaseOrder).
+		Named("purchase_orders.update.v1").
+		HTTP("PUT", "/api/v1/purchase/orders/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeletePurchaseOrder).
+		Named("purchase_orders.delete.v1").
+		HTTP("DELETE", "/api/v1/purchase/orders/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetPurchaseOrderStats).
+		Named("purchase_orders.stats.v1").
+		HTTP("GET", "/api/v1/purchase/orders/stats").
+		Done()
+
+	// Goods Receipts
+	app.RegisterHandler(handlers.ListGoodsReceipts).
+		Named("goods_receipts.list.v1").
+		HTTP("GET", "/api/v1/purchase/receipts").
+		Done()
+
+	app.RegisterHandler(handlers.CreateGoodsReceipt).
+		Named("goods_receipts.create.v1").
+		HTTP("POST", "/api/v1/purchase/receipts").
+		Done()
+
+	app.RegisterHandler(handlers.GetGoodsReceipt).
+		Named("goods_receipts.get.v1").
+		HTTP("GET", "/api/v1/purchase/receipts/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdateGoodsReceipt).
+		Named("goods_receipts.update.v1").
+		HTTP("PUT", "/api/v1/purchase/receipts/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeleteGoodsReceipt).
+		Named("goods_receipts.delete.v1").
+		HTTP("DELETE", "/api/v1/purchase/receipts/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetGoodsReceiptStats).
+		Named("goods_receipts.stats.v1").
+		HTTP("GET", "/api/v1/purchase/receipts/stats").
+		Done()
+
+	// Purchase Invoices
+	app.RegisterHandler(handlers.ListPurchaseInvoices).
+		Named("purchase_invoices.list.v1").
+		HTTP("GET", "/api/v1/purchase/invoices").
+		Done()
+
+	app.RegisterHandler(handlers.CreatePurchaseInvoice).
+		Named("purchase_invoices.create.v1").
+		HTTP("POST", "/api/v1/purchase/invoices").
+		Done()
+
+	app.RegisterHandler(handlers.GetPurchaseInvoice).
+		Named("purchase_invoices.get.v1").
+		HTTP("GET", "/api/v1/purchase/invoices/:id").
+		Done()
+
+	app.RegisterHandler(handlers.UpdatePurchaseInvoice).
+		Named("purchase_invoices.update.v1").
+		HTTP("PUT", "/api/v1/purchase/invoices/:id").
+		Done()
+
+	app.RegisterHandler(handlers.DeletePurchaseInvoice).
+		Named("purchase_invoices.delete.v1").
+		HTTP("DELETE", "/api/v1/purchase/invoices/:id").
+		Done()
+
+	app.RegisterHandler(handlers.GetPurchaseInvoiceStats).
+		Named("purchase_invoices.stats.v1").
+		HTTP("GET", "/api/v1/purchase/invoices/stats").
+		Done()
+
+	log.Println("✅ Registered 124 v1 endpoints (28 core + 48 ERP + 24 Sales + 24 Purchase)")
 }
 
 func registerV2Routes(app *app.App) {
